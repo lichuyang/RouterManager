@@ -1,0 +1,160 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    tools:context="com.powerock.hydra.MainActivity" >
+
+    <RelativeLayout
+        android:id="@+id/toplayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="30dp" >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="获取路由信息"
+            android:textColor="@android:color/white"
+            android:textSize="26sp" />
+
+        <ImageView
+            android:id="@+id/progress"
+            android:layout_width="120dp"
+            android:layout_height="14dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="18dp"
+            android:background="@drawable/step1" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/mainlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toplayout"
+        android:layout_marginTop="60dp"
+        android:gravity="center_horizontal" >
+	<RelativeLayout 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/routeriplayout"
+	    android:layout_centerHorizontal="true"
+	    >
+        <TextView
+            android:id="@+id/routerip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="路由器ip:"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/routeriptext"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@id/routerip"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+	</RelativeLayout>
+	<RelativeLayout 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/deviceiplayout"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginTop="45dp"
+	    android:layout_below="@id/routeriplayout"
+	    >
+        <TextView
+            android:id="@+id/deviceip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            
+            
+            android:text="此设备ip:"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/deviceiptext"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@id/deviceip"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+</RelativeLayout>
+<RelativeLayout 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/maskcodelayout"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginTop="45dp"
+	    android:layout_below="@id/deviceiplayout"
+	    >
+        <TextView
+            android:id="@+id/maskcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="子网掩码:"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/maskcodetext"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@id/maskcode"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+</RelativeLayout>
+<RelativeLayout 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:id="@+id/routertypelayout"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginTop="45dp"
+	    android:layout_below="@id/maskcodelayout"
+	    >
+        <TextView
+            android:id="@+id/routertype"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="路由器型号:"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/routertypetext"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@id/routertype"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="130dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/mainlayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="110dp"
+        android:background="@drawable/login_button_bg"
+        android:enabled="false"
+        android:text="下一步"
+        android:textColor="#696e96"
+        android:textSize="26sp" />
+
+</RelativeLayout>

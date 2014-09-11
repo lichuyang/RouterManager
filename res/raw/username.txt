@@ -1,0 +1,4 @@
+guest
+cisco
+admin
+public

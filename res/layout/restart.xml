@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    tools:context="com.powerock.hydra.MainActivity" >
+
+    <RelativeLayout
+        android:id="@+id/toplayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="30dp" >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="重启"
+            android:textColor="@android:color/white"
+            android:textSize="26sp" />
+         <ImageView 
+        android:id="@+id/progress"
+        android:layout_width="120dp"
+        android:layout_height="14dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="18dp"   
+        android:background="@drawable/step5"     
+        />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/progressview"
+        android:layout_width="275dp"
+        android:layout_height="275dp"
+        android:layout_below="@id/toplayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:gravity="center"
+        android:textSize="70sp"
+        android:text="0"
+        android:textColor="@android:color/white"
+        android:background="@drawable/time20" />
+
+<Button
+        android:id="@+id/okButton"
+        android:layout_width="130dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/progressview"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="110dp"
+        android:background="@drawable/login_button_bg"
+        android:text="完成"
+        android:textColor="#ffffff"
+        android:textSize="26sp" />
+
+</RelativeLayout>

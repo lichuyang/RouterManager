@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"    
+    tools:context="com.powerock.hydra.MainActivity" 
+    android:background="@drawable/bg">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="265dp"
+        android:layout_height="265dp"
+        android:background="@drawable/logo"
+        android:layout_marginTop="60dp" 
+        android:layout_centerHorizontal="true"/>
+    <TextView 
+        android:id="@+id/waitText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="26sp"
+        android:textColor="@android:color/white"
+        android:layout_below="@id/logo"
+        android:layout_centerHorizontal="true"
+        android:text="？等待路由插入"
+        android:layout_marginTop="30dp"
+        />
+    <TextView 
+        android:id="@+id/alreadyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="26sp"
+        android:textColor="#4e537b"
+        android:layout_below="@id/waitText"
+        android:layout_centerHorizontal="true"
+        android:text="! 路由已插入"
+        android:layout_marginTop="10dp"
+        />
+    
+    <Button 
+        android:id="@+id/startButton"
+        android:text="开始"
+        android:textSize="26sp"
+        android:textColor="#696e96"
+        android:layout_width="130dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="50dp"
+        android:layout_alignParentBottom="true"
+        android:enabled="false"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/login_button_bg"
+               
+        />
+
+</RelativeLayout>
