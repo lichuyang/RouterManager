@@ -115,16 +115,16 @@ public class BaseUtils {
 	}
 	
 	
-	public static void processHandler(final TextView progressView, final ProgressImageView progressImageView, final int progress, int time, final int tag){
+	public static void processHandler(final TextView progressView, final ProgressImageView progressImageView, final int progress, int time){
 		 Handler handler = new Handler();
 			handler.postDelayed(new Runnable() {
 				public void run() {
-					if(tag == 1 && Integer.parseInt(progressView.getText().toString()) < 100){
+					if(Integer.parseInt(progressView.getText().toString()) < 100){
 						progressView.setText(progress + "");
 						progressImageView.setProgress(progress);
 					}else{
-						progressView.setText(progress + "");
-						progressImageView.setProgress(progress);
+						//progressView.setText(progress + "");
+						//progressImageView.setProgress(progress);
 					}
 				}
 			}, time);

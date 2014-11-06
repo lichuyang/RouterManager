@@ -113,6 +113,7 @@ public class BackupActivity extends Activity{
 				startButton.setTextColor(Color.parseColor("#4e537b"));
 				startButton.setEnabled(false);
 				String url = "http://" + gateway + "/userRpm/config.bin";
+				String lkUrl = "http://" + gateway + "/param.file.tgz";
 				File dir = new File(Environment.getExternalStorageDirectory()+ "/Hydra/FirmBackup/");
 				if (!dir.exists()) {
 					System.out.println(2);
@@ -121,10 +122,13 @@ public class BackupActivity extends Activity{
 				Calendar c1 = Calendar.getInstance();
 				startTime = c1.getTimeInMillis();
 				for(int i=5; i < 100; i+=5){
-					BaseUtils.processHandler(progressView, progressImageView, i, i*100, 0);
+					BaseUtils.processHandler(progressView, progressImageView, i, i*100);
 				}
 				BackUpTask task = new BackUpTask();
-				task.execute(url,Environment.getExternalStorageDirectory()+ "/Hydra/FirmBackup/" ,routerType+ "-" + gateway+"-config.bin");
+				if( routerType.equals("netcore切親"))
+					task.execute(lkUrl,Environment.getExternalStorageDirectory()+ "/Hydra/FirmBackup/" ,routerType+ "-" + gateway+"-config.file.tgz");
+				else
+					task.execute(url,Environment.getExternalStorageDirectory()+ "/Hydra/FirmBackup/" ,routerType+ "-" + gateway+"-config.bin");
 			}
 		});
 		
@@ -139,15 +143,25 @@ public class BackupActivity extends Activity{
 		protected String doInBackground(String... arg0) {
 			// TODO Auto-generated method stub
 			HttpGet httpRequest = new HttpGet(arg0[0]);
+			System.out.println("arg" + arg0[0] + userpass);
 			httpRequest.addHeader("User-Agent",
 					"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0");
-			httpRequest.addHeader("Accept",
-					"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-			httpRequest.addHeader("Authorization", "Basic " + userpass);
-			httpRequest.addHeader("Accept-Encoding", "gzip, deflate");
+			
+			httpRequest.addHeader("Authorization", userpass);
+			if(routerType.equals("netcore切親")){
+				httpRequest.addHeader("Accept-Encoding", "gzip,deflate,sdch");
+				httpRequest.addHeader("Accept",
+						"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+				httpRequest.addHeader("Accept-Language", "en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4");
+			}else{
+				httpRequest.addHeader("Accept-Encoding", "gzip, deflate");
+				httpRequest.addHeader("Accept",
+						"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+				httpRequest.addHeader("Referer", "http://" + gateway
+						+ "/incoming/Firmware.htm");
+			}
 			httpRequest.addHeader("Connection", "keep-alive");
-			httpRequest.addHeader("Referer", "http://" + gateway
-					+ "/incoming/Firmware.htm");
+			
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpResponse httpResponse = null;
 			try {
@@ -192,6 +206,8 @@ public class BackupActivity extends Activity{
 			else if(routerType.equals("TL-WR720N"))
 				fileSize = 23416;
 			else if(routerType.equals("TL-WR703N"))
+				fileSize = 22904;
+			else if(routerType.equals("TL-WR841N"))
 				fileSize = 22904;
 			else if(routerType.equals("DIR505"))
 				fileSize = 345;

@@ -143,11 +143,13 @@ containing a value of this type.
     }
     public static final class raw {
         public static final int dir505=0x7f040000;
-        public static final int password=0x7f040001;
-        public static final int tlwr703n=0x7f040002;
-        public static final int tlwr720n=0x7f040003;
-        public static final int tlwr941n=0x7f040004;
-        public static final int username=0x7f040005;
+        public static final int nw736=0x7f040001;
+        public static final int password=0x7f040002;
+        public static final int tlwr703n=0x7f040003;
+        public static final int tlwr720n=0x7f040004;
+        public static final int tlwr841n=0x7f040005;
+        public static final int tlwr941n=0x7f040006;
+        public static final int username=0x7f040007;
     }
     public static final class string {
         public static final int action_settings=0x7f07000a;

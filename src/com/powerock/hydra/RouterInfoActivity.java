@@ -45,7 +45,7 @@ public class RouterInfoActivity extends Activity {
 
 	private String routerType = "";
 	
-	private String[] routerTypeAll= {"TL-WR703N", "TL-WR720N", "TL-WR941N", "DIR505"};
+	private String[] routerTypeAll= {"TL-WR703N", "TL-WR720N", "TL-WR941N", "DIR505", "netcore磊科", "TL-WR841N"};
 	
 	private int tag = 0;
 
@@ -73,8 +73,10 @@ public class RouterInfoActivity extends Activity {
 		SetRouterTypeTask task = new SetRouterTypeTask();
 		task.execute();
 		
-		SetDRouterTypeTask dTask = new SetDRouterTypeTask();
-		dTask.execute();
+		
+		
+		
+		
 		
 		nextButton.setOnClickListener(new OnClickListener() {
 
@@ -120,12 +122,17 @@ public class RouterInfoActivity extends Activity {
 				e.printStackTrace();
 			}
 			for(int i=0;i<headers.length;i++){
+				System.out.println("headers" + i + ": "+ headers[i]);
 				if(headers[i].getValue().toUpperCase().contains("703N")){
 					routerType = routerTypeAll[0];
 				}else if(headers[i].getValue().toUpperCase().contains("720N")){
 					routerType = routerTypeAll[1];
 				}else if(headers[i].getValue().toUpperCase().contains("941N")){
 					routerType = routerTypeAll[2];
+				}else if(headers[i].getValue().toUpperCase().contains("941N")){
+					routerType = routerTypeAll[2];
+				}else if(headers[i].getValue().toUpperCase().contains("841N")){
+					routerType = routerTypeAll[5];
 				}
 			}
 			System.out.println("routerType:" + routerType);
@@ -143,10 +150,10 @@ public class RouterInfoActivity extends Activity {
 			routerTypeView.setText(routerType);
 			nextButton.setTextColor(Color.parseColor("#ffffff"));
 			nextButton.setEnabled(true);
-			}else if(tag==1){
-				BaseUtils.customToast(RouterInfoActivity.this, "无法获取路由器型号！");				
 			}else{
-				tag = 1;
+				SetDRouterTypeTask dTask = new SetDRouterTypeTask();
+			dTask.execute();
+			
 			}
 		}
 	}
@@ -184,7 +191,7 @@ public class RouterInfoActivity extends Activity {
 			}
 				if(result.contains("DIR-505"))
 					routerType = routerTypeAll[3];
-			
+			System.out.println("result:" + result);
 			return null;
 		}
 		@Override
@@ -196,16 +203,67 @@ public class RouterInfoActivity extends Activity {
 				routerTypeView.setText(routerType);
 				nextButton.setTextColor(Color.parseColor("#ffffff"));
 				nextButton.setEnabled(true);
-			}else if(tag==1){
-				BaseUtils.customToast(RouterInfoActivity.this, "无法获取路由器型号！");				
 			}else{
-				tag = 1;
+				SetLKRouterTypeTask lkTask = new SetLKRouterTypeTask();
+				lkTask.execute();
 			}
 		}
 	}
 	
 	
-	
-	
+	class SetLKRouterTypeTask extends AsyncTask<String, String, String> {
 
+		@Override
+		protected String doInBackground(String... arg0) {
+			// TODO Auto-generated method stub
+			HttpGet httpGet = new HttpGet(url);
+			httpGet.setHeader("User-Agent",
+					"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0");
+			httpGet.setHeader("Accept-Encoding", "gzip, deflate");
+			httpGet.setHeader("Accept",
+					"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+			HttpResponse httpResponse = null;
+			try {
+				httpResponse = new DefaultHttpClient().execute(httpGet);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Header[] headers = null;
+			try {
+				headers = httpResponse.getAllHeaders();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			for(int i=0;i<headers.length;i++){
+				System.out.println("headers" + i + ": "+ headers[i]);
+				if(headers[i].toString().contains("WWW-Authenticate: Basic realm=\"user\"")){
+					routerType = routerTypeAll[4];
+				}
+			}
+			System.out.println("routerType:" + routerType);
+			return null;
+		}
+
+		
+		
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			if(!routerType.equals("")){
+			routerTypeView.postInvalidate();
+			routerTypeView.setText(routerType);
+			nextButton.setTextColor(Color.parseColor("#ffffff"));
+			nextButton.setEnabled(true);
+			}else{
+				BaseUtils.customToast(RouterInfoActivity.this, "无法获取路由器型号！");				
+			}
+		}
+	}
+	
 }

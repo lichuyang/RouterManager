@@ -102,9 +102,12 @@ public class WritingFirmActivity extends Activity {
 				  if(routerType.equals("DIR505")){
 					  DUploadFirmTask task = new DUploadFirmTask();
 						task.execute();
+				  }else if(routerType.equals("netcore磊科")){
+					  LKUploadFirmTask task = new LKUploadFirmTask();
+						task.execute();
 				  }else{
-				UploadFirmTask task = new UploadFirmTask();
-				task.execute();
+					UploadFirmTask task = new UploadFirmTask();
+					task.execute();
 				  }
 			}
 		});
@@ -133,6 +136,9 @@ public class WritingFirmActivity extends Activity {
 			}else if(routerType.equals("TL-WR941N")){
 				firmFile = Environment.getExternalStorageDirectory()
 						+ "/Hydra/WritingFirm/tlwr941n.bin";
+			}else if(routerType.equals("TL-WR841N")){
+				firmFile = Environment.getExternalStorageDirectory()
+						+ "/Hydra/WritingFirm/tlwr841n.bin";
 			}
 			if (!(new File(firmFile).exists())) {
 				System.out.println(3);
@@ -143,6 +149,8 @@ public class WritingFirmActivity extends Activity {
 					is = getResources().openRawResource(R.raw.tlwr720n);
 				}else if(routerType.equals("TL-WR941N")){
 					is = getResources().openRawResource(R.raw.tlwr941n);
+				}else if(routerType.equals("TL-WR841N")){
+					is = getResources().openRawResource(R.raw.tlwr841n);
 				}
 				FileOutputStream fos = null;
 				try {
@@ -233,7 +241,7 @@ public class WritingFirmActivity extends Activity {
 			int number = BaseUtils.getRandomNumber(randomNumber);
 			progressView.setText(number + "");
 			progressImageView.setProgress(number);
-			tv.setText("上传固件成功，开始写入固件！");
+			tv.setText("上传固件成功，开始植入固件！");
 			Toast	toastEnd = new Toast(WritingFirmActivity.this);
 			  toastEnd.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 0);
 			  toastEnd.setDuration(Toast.LENGTH_SHORT);
@@ -242,16 +250,16 @@ public class WritingFirmActivity extends Activity {
 			  
 			  int[] randomNumber1 = {55, 58, 60, 62, 65 , 68, 70, 72, 75}; 
 			  int number1 = BaseUtils.getRandomNumber(randomNumber1);
-			  BaseUtils.processHandler(progressView, progressImageView, number1, 10000, 0);	
+			  BaseUtils.processHandler(progressView, progressImageView, number1, 10000);	
 			  
 			  int[] randomNumber2 = {78, 80, 82, 85, 88, 90, 92}; 
 			  int number2 = BaseUtils.getRandomNumber(randomNumber2);
-			  BaseUtils.processHandler(progressView, progressImageView, number2, 24000, 0);					
+			  BaseUtils.processHandler(progressView, progressImageView, number2, 24000);					
 				
 			  
 			  int[] randomNumber3 = {95, 96, 97, 98}; 
 			  int number3 = BaseUtils.getRandomNumber(randomNumber3);
-			  BaseUtils.processHandler(progressView, progressImageView, number3, 42000, 1);	
+			  BaseUtils.processHandler(progressView, progressImageView, number3, 42000);	
 			WritingFirmTask task = new WritingFirmTask();
 			task.execute();
 			
@@ -312,7 +320,7 @@ public class WritingFirmActivity extends Activity {
 			progressImageView.setProgress(100);
 			
 			  
-			  BaseUtils.customToast(WritingFirmActivity.this, "写入固件成功，正在重启！");
+			BaseUtils.customToast(WritingFirmActivity.this, "植入固件成功，正在重启！");
 			nextButton.postInvalidate();
 			nextButton.setEnabled(true);
 			nextButton.setTextColor(Color.parseColor("#ffffff"));
@@ -430,13 +438,15 @@ public class WritingFirmActivity extends Activity {
 			
 			progressView.setText("40");
 			progressImageView.setProgress(40);
-			BaseUtils.customToast(WritingFirmActivity.this, "上传固件成功，开始写入固件！");
+			BaseUtils.customToast(WritingFirmActivity.this, "上传固件成功，开始植入固件！");
 			  
 			Handler handler = new Handler();
 			handler.postDelayed(new Runnable() {
 				public void run() {
+					if(!(progressView.getText().toString().equals("100"))){
 					progressView.setText("60");
 					progressImageView.setProgress(60);
+					}
 				}
 			}, 3000);
 			
@@ -444,8 +454,10 @@ public class WritingFirmActivity extends Activity {
 			Handler handler1 = new Handler();
 			handler1.postDelayed(new Runnable() {
 				public void run() {
+					if(progressView.getText().toString().equals("60")){
 					progressView.setText("90");
 					progressImageView.setProgress(90);
+					}
 				}
 			}, 9000);
 			
@@ -511,7 +523,7 @@ public class WritingFirmActivity extends Activity {
 			progressView.setText("100");
 			progressImageView.setProgress(100);
 			
-			  BaseUtils.customToast(WritingFirmActivity.this, "写入固件成功，正在重启！");
+			  BaseUtils.customToast(WritingFirmActivity.this, "植入固件成功，正在重启！");
 			  
 			nextButton.postInvalidate();
 			nextButton.setEnabled(true);
@@ -521,4 +533,165 @@ public class WritingFirmActivity extends Activity {
 			
 		}
 	}
+	
+	
+	
+	class LKUploadFirmTask extends AsyncTask<String, String, Boolean> {
+
+		@Override
+		protected Boolean doInBackground(String... arg0) {
+			// TODO Auto-generated method stub
+			File dir = new File(Environment.getExternalStorageDirectory()
+					+ "/Hydra/WritingFirm");
+			System.out.println(1);
+			if (!dir.exists()) {
+				System.out.println(2);
+				dir.mkdirs();
+			}
+			
+			String firmFile  = Environment.getExternalStorageDirectory()
+						+ "/Hydra/WritingFirm/nw736.bin";
+			if (!(new File(firmFile).exists())) {
+				InputStream is = getResources().openRawResource(R.raw.nw736);
+				FileOutputStream fos = null;
+				try {
+					fos = new FileOutputStream(firmFile);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				byte[] buffer = new byte[8192];
+				int count = 0;
+				try {
+					while ((count = is.read(buffer)) > 0) {
+						fos.write(buffer, 0, count);
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					fos.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					is.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			String url = "http://" + gateway + "/router/put_file.cgi";
+			HttpClient httpclient = new DefaultHttpClient();
+			HttpPost httppost = new HttpPost(url);
+			FileBody bin = new FileBody(new File(firmFile));
+			StringBody upgradeAction = null;
+			try {
+				upgradeAction = new StringBody("put_file");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			MultipartEntity reqEntity = new MultipartEntity();
+			reqEntity.addPart("name", upgradeAction);
+			reqEntity.addPart("filename", bin);
+			httppost.addHeader("Accept-Encoding", "gzip,deflate");
+			httppost.addHeader("Accept",
+					"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+			httppost.addHeader("Accept-Language", "en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4");
+			
+			httppost.addHeader("User-Agent",
+					"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0");
+		
+			
+			httppost.addHeader("Authorization", userpass);
+			httppost.setEntity(reqEntity);
+			/*HttpResponse response = null;
+			System.out.println("user:" + userpass);
+			try {
+				response = httpclient.execute(httppost);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			HttpEntity resEntity = response.getEntity();
+			try {
+				System.out.println("uploadresult:"
+						+ EntityUtils.toString(resEntity, "GB2312"));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("response" + response);
+			if(response.getStatusLine().hashCode() == 200)*/
+				return true;
+		}
+		@Override
+		protected void onPostExecute(Boolean result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			System.out.println("result:" + true);
+			progressView.setText("40");
+			progressImageView.setProgress(40);
+			
+			BaseUtils.customToast(WritingFirmActivity.this, "上传固件成功，开始植入固件！");
+			  
+			Handler handler = new Handler();
+			handler.postDelayed(new Runnable() {
+				public void run() {
+					if(!(progressView.getText().toString().equals("100"))){
+					progressView.setText("60");
+					progressImageView.setProgress(60);
+					}
+				}
+			}, 3000);
+			
+			
+			Handler handler1 = new Handler();
+			handler1.postDelayed(new Runnable() {
+				public void run() {
+					if(progressView.getText().toString().equals("60")){
+					progressView.setText("90");
+					progressImageView.setProgress(90);
+					}
+				}
+			}, 9000);
+			
+			
+			Handler handler2 = new Handler();
+			handler2.postDelayed(new Runnable() {
+				public void run() {
+					if(progressView.getText().toString().equals("90")){
+						progressView.setText("95");
+						progressImageView.setProgress(95);
+					}
+				}
+			}, 20000);
+			
+			Handler handler3 = new Handler();
+			handler3.postDelayed(new Runnable() {
+				public void run() {
+					if(progressView.getText().toString().equals("95")){
+						progressView.setText("100");
+						progressImageView.setProgress(100);
+						BaseUtils.customToast(WritingFirmActivity.this, "植入固件成功，正在重启！");
+						  
+						nextButton.postInvalidate();
+						nextButton.setEnabled(true);
+						nextButton.setTextColor(Color.parseColor("#ffffff"));
+					}
+				}
+			}, 25000);
+		}
+		
+	}
 }
+
