@@ -256,6 +256,10 @@ public class GetPassActivity extends Activity {
 			if (result.toString().equals("true")) {
 				nextButton.setEnabled(true);
 				nextButton.setTextColor(Color.parseColor("#ffffff"));
+				if(n==0 && m == 0){
+					usernameView.setText(user.get(0));
+					passView.setText(pass.get(0));
+				}
 				tag = false;
 			} 
 			
@@ -411,6 +415,10 @@ public class GetPassActivity extends Activity {
 			if (result.toString().equals("true")) {
 				nextButton.setEnabled(true);
 				nextButton.setTextColor(Color.parseColor("#ffffff"));
+				if(n==0 && m == 0){
+					usernameView.setText(user.get(0));
+					passView.setText(pass.get(0));
+				}
 				tag = false;
 			} 
 			
@@ -525,6 +533,10 @@ public class GetPassActivity extends Activity {
 			if (result.toString().equals("true")) {
 				nextButton.setEnabled(true);
 				nextButton.setTextColor(Color.parseColor("#ffffff"));
+				if(n==0 && m == 0){
+					usernameView.setText(user.get(0));
+					passView.setText(pass.get(0));
+				}
 				tag = false;
 			} 
 			if(n==pass.size()-1 && tag){
